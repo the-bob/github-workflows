@@ -38,9 +38,9 @@ jobs:
       - name: Normalise Tag
         run: |
           ref_name="${github_ref_name////_}"
-          echo $ref_name
-        env:
-          github_ref_name: ${{ github.ref_name }}
+          echo $ref_name >> $github_ref_name
+        # env:
+        #   github_ref_name: ${{ github.ref_name }}
 
       - name: Log into registry 
         if: github.event_name != 'pull_request'
@@ -63,6 +63,6 @@ jobs:
         with:
           context: ${{ inputs.context }}
           push: ${{ github.ref == 'refs/heads/develop' && github.event_name == 'push' }}
-          tags: ${{ steps.meta.outputs.tags }}_${{ github.run_id }},ghcr.io/${{ inputs.org }}/${{ inputs.image_name }}:${{ inputs.tag }}_${{ github.ref_name  }}
+          tags: ${{ steps.meta.outputs.tags }}_${{ github.run_id }},ghcr.io/${{ inputs.org }}/${{ inputs.image_name }}:${{ inputs.tag }}_${{ env.github_ref_name  }}
           labels: ${{ steps.meta.outputs.labels }} 
                    
