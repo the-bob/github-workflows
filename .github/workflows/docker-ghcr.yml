@@ -16,9 +16,8 @@ on:
         default: latest
       run_id: 
         type: string
-    secrets:
       registry:
-        required: true      
+        required: true        
 
 jobs:
   build-docker:
