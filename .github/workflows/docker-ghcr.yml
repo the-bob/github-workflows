@@ -62,6 +62,6 @@ jobs:
         with:
           context: ${{ inputs.context }}
           push: ${{ github.ref == 'refs/heads/develop' && github.event_name == 'push' }}
-          tags: ${{ steps.meta.outputs.tags }}_${{ github.run_id }},ghcr.io/${{ inputs.org }}/${{ inputs.image_name }}:${{ inputs.tag }}_${{ github.ref_name }}
+          tags: ${{ steps.meta.outputs.tags }}_${{ github.run_id }},ghcr.io/${{ inputs.org }}/${{ inputs.image_name }}:${{ inputs.tag }}_${{ github_ref }}
           labels: ${{ steps.meta.outputs.labels }} 
                    
