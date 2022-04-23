@@ -11,6 +11,8 @@ on:
         type: string
       context:                
         type: string
+        required: false
+        default: .
       tag: 
         type: string
         default: latest
