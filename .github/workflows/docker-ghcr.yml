@@ -18,7 +18,10 @@ on:
         type: string
       registry:
         required: true     
-        type: string   
+        type: string
+      username:
+        type: string
+        required: false   
 
 jobs:
   build-docker:
@@ -35,7 +38,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ${{ secrets.registry }}
-          username: ${{ github.actor }}
+          username: ${{ inputs.username }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract Docker metadata
