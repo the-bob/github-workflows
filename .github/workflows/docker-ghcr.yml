@@ -37,7 +37,8 @@ jobs:
 
       - name: Normalise Tag
         run: |          
-          echo "github_ref_name=${github_ref_name////_}" >> $GITHUB_ENV
+          ref="${github_ref_name}"
+          echo "github_ref_name=${ref////_}" >> $GITHUB_ENV
 
 
       - name: Log into registry 
