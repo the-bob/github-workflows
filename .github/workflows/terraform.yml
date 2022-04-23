@@ -12,7 +12,6 @@ on:
       secret_access_key:
         required: true
 
-
 permissions:
   contents: read
 
