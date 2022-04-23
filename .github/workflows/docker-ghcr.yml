@@ -16,7 +16,7 @@ on:
         default: latest
       run_id: 
         type: string
-      registry:
+      org:
         required: true     
         type: string
       username:
@@ -32,9 +32,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      
-      - name: Init
-        run: echo ${{ github.actor }}
 
       - name: Log into registry 
         if: github.event_name != 'pull_request'
@@ -48,7 +45,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ inputs.registry }}/opeepl/${{ inputs.image_name }}
+          images: ghcr.io/${{ inputs.org }}/${{ inputs.image_name }}
 
       # Runs a single command using the runners shell
       - name: Build Docker Image
@@ -57,5 +54,5 @@ jobs:
         with:
           context: ${{ inputs.context }}
           push: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/develop' && github.event_name == 'push' }}
-          tags: ${{ steps.meta.outputs.tags }}_${{ github.run_id }},${{ secrets.registry }}/${{ inputs.image_name }}:${{ inputs.tag }}
+          tags: ${{ steps.meta.outputs.tags }}_${{ github.run_id }},${{ inputs.org }}/${{ inputs.image_name }}:${{ inputs.tag }}
           labels: ${{ steps.meta.outputs.labels }}
