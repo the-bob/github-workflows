@@ -23,8 +23,7 @@ on:
         type: string
         required: false
     secrets:
-      password:
-        type: string
+      password:        
         required: true
 
 jobs:
