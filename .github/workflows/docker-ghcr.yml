@@ -14,18 +14,11 @@ on:
       tag: 
         type: string
         default: latest
-      region:
-        type: string
-        default: eu-west-1
       run_id: 
         type: string
     secrets:
       registry:
-        required: true
-      registry_access_key_id:
-        required: true
-      registry_secret_access_key:
-        required: true
+        required: true      
 
 jobs:
   build-docker:
@@ -39,10 +32,8 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ${{ secrets.registry }}
-          username: ${{ secrets.registry_access_key_id }}
-          password: ${{ secrets.registry_secret_access_key }}
-        env:
-          AWS_REGION: ${{ inputs.region }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract Docker metadata
         id: meta
