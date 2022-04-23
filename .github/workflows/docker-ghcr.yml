@@ -38,8 +38,7 @@ jobs:
       - name: Normalise Tag
         run: |          
           echo "github_ref_name=${github_ref_name////_}" >> $GITHUB_ENV
-        # env:
-        #   github_ref_name: ${{ github.ref_name }}
+
 
       - name: Log into registry 
         if: github.event_name != 'pull_request'
