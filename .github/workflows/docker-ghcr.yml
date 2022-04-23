@@ -34,6 +34,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - run: |
+          ref=ref="${github_ref////_}"
+          echo $ref
+          echo "::set-env name=ref::$ref"
+        env:
+          github_ref: ${{ github.ref }}
 
       - name: Log into registry 
         if: github.event_name != 'pull_request'
