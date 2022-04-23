@@ -1,7 +1,7 @@
 ########################################################################
 # This is a reusable workflow
 ########################################################################
-name: Opeepl Docker CI
+name: Docker ECR Push
 
 on:
   workflow_call:
