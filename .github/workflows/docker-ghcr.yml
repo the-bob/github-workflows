@@ -34,8 +34,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - run: |
-          ref=ref="${github_ref////_}"
+
+      - name: Normalise Tag
+        run: |
+          ref="${github_ref////_}"
           echo $ref
         env:
           github_ref: ${{ github.ref }}
