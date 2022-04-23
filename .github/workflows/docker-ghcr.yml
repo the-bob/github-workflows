@@ -48,7 +48,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ${{ inputs.registry }}/${{ inputs.image_name }}
+          images: ${{ inputs.registry }}/opeepl/${{ inputs.image_name }}
 
       # Runs a single command using the runners shell
       - name: Build Docker Image
