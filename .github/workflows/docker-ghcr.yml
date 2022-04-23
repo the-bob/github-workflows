@@ -58,4 +58,4 @@ jobs:
           push: ${{ github.ref == 'refs/heads/develop' && github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}_${{ github.run_id }},ghcr.io/${{ inputs.org }}/${{ inputs.image_name }}:${{ inputs.tag }}
           labels: ${{ steps.meta.outputs.labels }} 
-          pull: true         
+                   
