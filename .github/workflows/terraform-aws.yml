@@ -10,15 +10,18 @@ on:
         required: false
         type: boolean
         default: false
+      terraform_vars:
+        required: false
+        type: string        
       eks-cluster:
         required: false
         type: string
       eks-region:
         required: false
         type: string
-      terraform_vars:
+      runner-ip:
         required: false
-        type: string
+        type: string   
     secrets:
       access_key_id:
         required: true
@@ -63,6 +66,8 @@ jobs:
           --location \
           --remote-name
         aws eks update-kubeconfig --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }}
+        aws eks update-cluster-config --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} \
+          --resources-vpc-config publicAccessCidrs="${{ inputs.runner-ip }}"
 
     - name: Terraform Plan
       run: terraform plan -input=false ${{ inputs.terraform_vars }} 
