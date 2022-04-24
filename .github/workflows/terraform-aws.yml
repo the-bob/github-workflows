@@ -18,7 +18,8 @@ on:
 jobs:
   terraform:    
     runs-on: ubuntu-latest
-    environment: development          
+    environment: development
+          
 
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.access_key_id }}
@@ -28,7 +29,12 @@ jobs:
       run:
         shell: bash
         working-directory: ${{ inputs.working_dir }}
-              
+        
+    steps:
+    - name: Github Action IP
+      id: ip
+      uses: haythem/public-ip@v1.2    
+      
     - name: Checkout
       uses: actions/checkout@v3
 
@@ -44,7 +50,7 @@ jobs:
       run: terraform fmt -check
 
     - name: Terraform Plan
-      run: terraform plan -input=false ${{ terraform_vars}}
+      run: terraform plan -input=false ${{ inputs.terraform_vars }} 
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
