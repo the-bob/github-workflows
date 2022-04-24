@@ -77,6 +77,7 @@ jobs:
         do 
           STATUS=$(aws eks describe-update --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} --update-id $UPDATE_ID | jq '.update.status' --raw-output) 
           echo "Current Status .. $STATUS"
+          sleep 5s
         done
         
 
