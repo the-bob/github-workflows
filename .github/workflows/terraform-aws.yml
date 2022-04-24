@@ -57,7 +57,7 @@ jobs:
     - name: Terraform Format
       run: terraform fmt -check
 
-    - name: Install and configure kubectl
+    - name: Configure EKS
       if: inputs.kubectl == true
       run: |
         VERSION=$(curl --silent https://storage.googleapis.com/kubernetes-release/release/stable.txt)
