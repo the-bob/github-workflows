@@ -6,6 +6,10 @@ on:
       working_dir: 
         required: true
         type: string
+      kubectl:
+        required: false
+        type: boolean
+        default: false
       terraform_vars:
         required: false
         type: string
@@ -19,7 +23,6 @@ jobs:
   terraform:    
     runs-on: ubuntu-latest
     environment: development
-          
 
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.access_key_id }}
@@ -31,10 +34,6 @@ jobs:
         working-directory: ${{ inputs.working_dir }}
         
     steps:
-    - name: Github Action IP
-      id: ip
-      uses: haythem/public-ip@v1.2    
-      
     - name: Checkout
       uses: actions/checkout@v3
 
@@ -48,6 +47,15 @@ jobs:
 
     - name: Terraform Format
       run: terraform fmt -check
+
+    - name: Install and configure kubectl
+      if: inputs.kubectl == true
+      run: |
+        VERSION=$(curl --silent https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+        curl https://storage.googleapis.com/kubernetes-release/release/$VERSION/bin/linux/amd64/kubectl \
+          --progress-bar \
+          --location \
+          --remote-name
 
     - name: Terraform Plan
       run: terraform plan -input=false ${{ inputs.terraform_vars }} 
