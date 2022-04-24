@@ -73,7 +73,7 @@ jobs:
         OK=Successful
         while [ "${STATUS,,}" != "${OK,,}" ]
         do
-          STATUS=$(aws eks describe-update --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} --update-id $UPDATE_ID)
+          STATUS=$(aws eks describe-update --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} --update-id $UPDATE_ID | jq '.update.status' --raw-output)
         done
         
 
