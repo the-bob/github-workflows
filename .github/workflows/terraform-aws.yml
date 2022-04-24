@@ -28,7 +28,7 @@ jobs:
         working-directory: ${{ inputs.working_dir }}
         
     steps:
-      - name: Github Action IP
+    - name: Github Action IP
       id: ip
       uses: haythem/public-ip@v1.2    
       
