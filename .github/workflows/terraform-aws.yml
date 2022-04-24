@@ -68,7 +68,7 @@ jobs:
           --remote-name
         aws eks update-kubeconfig --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }}
         UPDATE_ID=$(aws eks update-cluster-config --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} \
-          --resources-vpc-config publicAccessCidrs="0.0.0.0/0" | jq '.update.id' --raw-output)
+          --resources-vpc-config endpointPublicAccess=true,publicAccessCidrs="0.0.0.0/0" | jq '.update.id' --raw-output)
         echo $UPDATE_ID
 
         STATUS=$(aws eks describe-update --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} --update-id $UPDATE_ID | jq '.update.status' --raw-output)
@@ -91,6 +91,15 @@ jobs:
     - name: Cleanup EKS
       if: inputs.kubectl == true
       run: |
-        aws eks update-cluster-config --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} \
-          --resources-vpc-config endpointPublicAccess=false,publicAccessCidrs="${{ inputs.runner-ip }}"
-        sleep 60s
+        UPDATE_ID=$(aws eks update-cluster-config --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} \
+          --resources-vpc-config publicAccessCidrs="${{ inputs.runner-ip }}" | jq '.update.id' --raw-output)
+        echo $UPDATE_ID
+
+        STATUS=$(aws eks describe-update --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} --update-id $UPDATE_ID | jq '.update.status' --raw-output)
+
+        while [ "$STATUS" != "Successful" ] 
+        do 
+          STATUS=$(aws eks describe-update --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} --update-id $UPDATE_ID | jq '.update.status' --raw-output) 
+          echo "Current Status .. $STATUS"
+          sleep 5s
+        done
