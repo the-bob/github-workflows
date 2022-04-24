@@ -67,7 +67,7 @@ jobs:
           --remote-name
         aws eks update-kubeconfig --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }}
         aws eks update-cluster-config --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} \
-          --resources-vpc-config publicAccessCidrs="${{ inputs.runner-ip }}"
+          --resources-vpc-config endpointPublicAccess=true,publicAccessCidrs="0.0.0.0/0"
         sleep 180s
 
     - name: Terraform Plan
@@ -76,3 +76,10 @@ jobs:
     - name: Terraform Apply
       if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
       run: terraform apply -auto-approve -input=false
+
+    - name: Cleanup EKS
+      if: inputs.install_kubectl == true
+      run: |
+        aws eks update-cluster-config --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} \
+          --resources-vpc-config endpointPublicAccess=false,publicAccessCidrs="${{ inputs.runner-ip }}"
+        sleep 180s
