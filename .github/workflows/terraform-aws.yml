@@ -92,7 +92,7 @@ jobs:
       if: inputs.kubectl == true
       run: |
         UPDATE_ID=$(aws eks update-cluster-config --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} \
-          --resources-vpc-config publicAccessCidrs="${{ inputs.runner-ip }}" | jq '.update.id' --raw-output)
+          --resources-vpc-config endpointPublicAccess=false,publicAccessCidrs="${{ inputs.runner-ip }}" | jq '.update.id' --raw-output)
         echo $UPDATE_ID
 
         STATUS=$(aws eks describe-update --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} --update-id $UPDATE_ID | jq '.update.status' --raw-output)
