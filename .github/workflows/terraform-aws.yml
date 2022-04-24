@@ -82,4 +82,3 @@ jobs:
       run: |
         aws eks update-cluster-config --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} \
           --resources-vpc-config endpointPublicAccess=false,publicAccessCidrs="${{ inputs.runner-ip }}"
-        sleep 180s
