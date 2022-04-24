@@ -6,10 +6,16 @@ on:
       working_dir: 
         required: true
         type: string
-      kubectl:
+      install_kubectl:
         required: false
         type: boolean
         default: false
+      eks-cluster:
+        required: false
+        type: string
+      eks-region:
+        required: false
+        type: string
       terraform_vars:
         required: false
         type: string
@@ -49,13 +55,17 @@ jobs:
       run: terraform fmt -check
 
     - name: Install and configure kubectl
-      if: inputs.kubectl == true
+      if: inputs.install_kubectl == true
       run: |
         VERSION=$(curl --silent https://storage.googleapis.com/kubernetes-release/release/stable.txt)
         curl https://storage.googleapis.com/kubernetes-release/release/$VERSION/bin/linux/amd64/kubectl \
           --progress-bar \
           --location \
           --remote-name
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip awscliv2.zip
+        sudo ./aws/install
+        aws eks update-kubeconfig --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }}
 
     - name: Terraform Plan
       run: terraform plan -input=false ${{ inputs.terraform_vars }} 
