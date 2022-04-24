@@ -16,7 +16,7 @@ on:
         required: true
 
 jobs:
-  deploy:    
+  terraform:    
     runs-on: ubuntu-latest
     environment: development          
 
