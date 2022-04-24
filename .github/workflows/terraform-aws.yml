@@ -6,7 +6,7 @@ on:
       working_dir: 
         required: true
         type: string
-      install_kubectl:
+      kubectl:
         required: false
         type: boolean
         default: false
@@ -58,7 +58,7 @@ jobs:
       run: terraform fmt -check
 
     - name: Install and configure kubectl
-      if: inputs.install_kubectl == true
+      if: inputs.kubectl == true
       run: |
         VERSION=$(curl --silent https://storage.googleapis.com/kubernetes-release/release/stable.txt)
         curl https://storage.googleapis.com/kubernetes-release/release/$VERSION/bin/linux/amd64/kubectl \
@@ -78,7 +78,7 @@ jobs:
       run: terraform apply -auto-approve -input=false
 
     - name: Cleanup EKS
-      if: inputs.install_kubectl == true
+      if: inputs.kubectl == true
       run: |
         aws eks update-cluster-config --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} \
           --resources-vpc-config endpointPublicAccess=false,publicAccessCidrs="${{ inputs.runner-ip }}"
