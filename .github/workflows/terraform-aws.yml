@@ -13,8 +13,7 @@ on:
         required: true
 
 jobs:
-  terraform:
-    name: 'Terraform'
+  terraform:    
     runs-on: ubuntu-latest
     environment: development
     
