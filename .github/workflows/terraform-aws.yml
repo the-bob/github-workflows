@@ -58,6 +58,7 @@ jobs:
       run: terraform fmt -check
 
     - name: Configure EKS
+      timeout-minutes: 10
       if: inputs.kubectl == true
       run: |
         VERSION=$(curl --silent https://storage.googleapis.com/kubernetes-release/release/stable.txt)
@@ -66,9 +67,15 @@ jobs:
           --location \
           --remote-name
         aws eks update-kubeconfig --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }}
-        aws eks update-cluster-config --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} \
-          --resources-vpc-config endpointPublicAccess=true,publicAccessCidrs="0.0.0.0/0"
-        sleep 180s
+        UPDATE_ID=$(aws eks update-cluster-config --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} \
+          --resources-vpc-config publicAccessCidrs="${{ inputs.runner-ip }}" | jq '.update.id' --raw-output)
+        STATUS=InProgress
+        OK=Successful
+        while [ "${STATUS,,}" != "${OK,,}" ]
+        do
+          STATUS=$(aws eks describe-update --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} --update-id $UPDATE_ID)
+        done
+        
 
     - name: Terraform Plan
       run: terraform plan -input=false ${{ inputs.terraform_vars }} 
