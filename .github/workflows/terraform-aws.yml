@@ -75,7 +75,7 @@ jobs:
 
         echo $STATUS
 
-        while [ "$STATUS" != "Successful" ]; do STATUS=$(aws eks describe-update --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} --update-id $UPDATE_ID | jq '.update.status' --raw-output); done
+        while [ "$STATUS" != "Successful" ]; do STATUS=$(aws eks describe-update --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} --update-id $UPDATE_ID | jq '.update.status' --raw-output); echo $STATUS; done
         
 
     - name: Terraform Plan
