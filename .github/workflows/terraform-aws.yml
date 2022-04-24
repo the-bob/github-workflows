@@ -69,12 +69,13 @@ jobs:
         aws eks update-kubeconfig --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }}
         UPDATE_ID=$(aws eks update-cluster-config --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} \
           --resources-vpc-config publicAccessCidrs="${{ inputs.runner-ip }}" | jq '.update.id' --raw-output)
-        STATUS=InProgress
-        OK=Successful
-        while [ "${STATUS,,}" != "${OK,,}" ]
-        do
-          STATUS=$(aws eks describe-update --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} --update-id $UPDATE_ID | jq '.update.status' --raw-output)
-        done
+        echo $UPDATE_ID
+
+        STATUS=$(aws eks describe-update --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} --update-id $UPDATE_ID | jq '.update.status' --raw-output)
+
+        echo $STATUS
+
+        while [ "$STATUS" != "Successful" ]; do STATUS=$(aws eks describe-update --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} --update-id $UPDATE_ID | jq '.update.status' --raw-output); done
         
 
     - name: Terraform Plan
