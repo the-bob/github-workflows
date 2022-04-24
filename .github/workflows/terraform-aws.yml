@@ -68,6 +68,7 @@ jobs:
         aws eks update-kubeconfig --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }}
         aws eks update-cluster-config --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} \
           --resources-vpc-config publicAccessCidrs="${{ inputs.runner-ip }}"
+        sleep 180s
 
     - name: Terraform Plan
       run: terraform plan -input=false ${{ inputs.terraform_vars }} 
