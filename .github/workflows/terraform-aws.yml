@@ -56,11 +56,14 @@ jobs:
 
     - name: Terraform Format
       run: terraform fmt -check
+    
+    - name: Terraform Validate
+      run: terraform validate
 
     - name: Configure EKS
       timeout-minutes: 10
       continue-on-error: true
-      if: inputs.kubectl == true
+      if: inputs.kubectl == true && github.ref == 'refs/heads/develop' && github.event_name == 'push'
       run: |
         VERSION=$(curl --silent https://storage.googleapis.com/kubernetes-release/release/stable.txt)
         curl https://storage.googleapis.com/kubernetes-release/release/$VERSION/bin/linux/amd64/kubectl --progress-bar --location --remote-name
@@ -82,6 +85,7 @@ jobs:
         done        
 
     - name: Terraform Plan
+      if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
       run: terraform plan -input=false ${{ inputs.terraform_vars }} 
 
     - name: Terraform Apply
@@ -90,7 +94,7 @@ jobs:
 
     - name: Cleanup EKS
       continue-on-error: true
-      if: inputs.kubectl == true
+      if: inputs.kubectl == true && github.ref == 'refs/heads/develop' && github.event_name == 'push'
       run: |
         UPDATE_ID=$(aws eks update-cluster-config --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} \
           --resources-vpc-config endpointPublicAccess=false | jq '.update.id' --raw-output)
