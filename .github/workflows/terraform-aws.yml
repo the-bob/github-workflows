@@ -59,16 +59,18 @@ jobs:
 
     - name: Configure EKS
       timeout-minutes: 10
+      continue-on-error: true
       if: inputs.kubectl == true
       run: |
         VERSION=$(curl --silent https://storage.googleapis.com/kubernetes-release/release/stable.txt)
-        curl https://storage.googleapis.com/kubernetes-release/release/$VERSION/bin/linux/amd64/kubectl \
-          --progress-bar \
-          --location \
-          --remote-name
+        curl https://storage.googleapis.com/kubernetes-release/release/$VERSION/bin/linux/amd64/kubectl --progress-bar --location --remote-name
+
         aws eks update-kubeconfig --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }}
+
+        
         UPDATE_ID=$(aws eks update-cluster-config --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} \
-          --resources-vpc-config endpointPublicAccess=true,publicAccessCidrs="0.0.0.0/0" | jq '.update.id' --raw-output)
+          --resources-vpc-config endpointPublicAccess=true,publicAccessCidrs="${{ inputs.runner-ip }}" | jq '.update.id' --raw-output)
+        
         echo $UPDATE_ID
 
         STATUS=$(aws eks describe-update --region ${{ inputs.eks-region }} --name ${{ inputs.eks-cluster }} --update-id $UPDATE_ID | jq '.update.status' --raw-output)
