@@ -59,6 +59,7 @@ jobs:
             ${{ runner.os }}-php- 
 
       - name: Install dependencies
+        working-directory: ${{ inputs.code_directory }}
         run: composer install --prefer-dist --no-progress      
 
       - name: Log into registry 
