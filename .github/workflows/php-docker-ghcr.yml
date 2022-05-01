@@ -45,8 +45,9 @@ jobs:
           echo "GITHUB_REF_NAME -> $GITHUB_REF_NAME"
 
       - name: Validate composer.json and composer.lock
-        run: composer validate 
         working-directory: ${{ inputs.code_directory }}
+        run: composer validate --strict
+        
       
       - name: Cache Composer packages
         id: composer-cache
