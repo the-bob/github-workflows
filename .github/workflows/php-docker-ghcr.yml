@@ -24,6 +24,10 @@ on:
       username:
         type: string
         required: false
+      code_directory:
+        type: string
+        required: false
+        default: app_code
     secrets:
       password:        
         required: true
@@ -42,6 +46,7 @@ jobs:
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
+        working-directory: ${{ inputs.code_directory }}
       
       - name: Cache Composer packages
         id: composer-cache
@@ -54,8 +59,6 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress      
-
-      
 
       - name: Log into registry 
         if: github.event_name != 'pull_request'
