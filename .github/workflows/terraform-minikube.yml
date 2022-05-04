@@ -1,0 +1,23 @@
+name: Terraform Minikube
+
+on:
+  workflow_call:
+    inputs:
+      working_dir: 
+        required: true
+        type: string
+
+jobs:
+  terraform-minikube:    
+    runs-on: ubuntu-latest
+    environment: development
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Start minikube
+      uses: medyagh/setup-minikube@master
+      
+    - name: Try the cluster !
+      run: kubectl get pods -A
