@@ -30,7 +30,7 @@ jobs:
     
     - name: Terraform Validate
       run: terraform validate
-å
+
     - name: Terraform Plan
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform plan -input=false ${{ inputs.terraform_vars }}
