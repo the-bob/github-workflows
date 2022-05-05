@@ -36,8 +36,9 @@ jobs:
       run: terraform validate
 
     - name: Terraform Plan
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform plan -input=false ${{ inputs.terraform_vars }}
-      
-    - name: Deploy
-      run: terraform 
+
+    - name: Terraform Apply
+      # if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+      run: terraform apply -auto-approve -input=false
