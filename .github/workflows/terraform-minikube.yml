@@ -21,6 +21,23 @@ jobs:
 
     - name: Try the cluster !
       run: kubectl get pods -A
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.1.8
+        
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Format
+      run: terraform fmt -check
     
-    - name: Run helm
-      run: helm list
+    - name: Terraform Validate
+      run: terraform validate
+
+    - name: Terraform Plan
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform plan -input=false ${{ inputs.terraform_vars }}
+      
+    - name: Deploy
+      run: terraform 
