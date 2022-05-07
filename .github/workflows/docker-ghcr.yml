@@ -24,6 +24,10 @@ on:
       username:
         type: string
         required: false
+      push:
+        type: boolean
+        required: false
+        default: false
     secrets:
       password:        
         required: true
@@ -60,7 +64,7 @@ jobs:
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: ${{ inputs.context }}
-          push: ${{ github.ref == 'refs/heads/develop' && github.event_name == 'push' }}
+          push: ${{ github.ref == 'refs/heads/develop' && github.event_name == 'push' || inputs.push }}
           tags: ${{ steps.meta.outputs.tags }}_${{ github.run_id }},ghcr.io/${{ inputs.org }}/${{ inputs.image_name }}:${{ inputs.tag }}_${{ env.GITHUB_REF_NAME  }}
           labels: ${{ steps.meta.outputs.labels }} 
                    
