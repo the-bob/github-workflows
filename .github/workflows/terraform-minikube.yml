@@ -10,6 +10,10 @@ on:
         required: false
         type: boolean
         default: false
+    secrets:
+      gpg_private_key:
+        required: false
+
 
 jobs:
   terraform-minikube:    
@@ -30,7 +34,7 @@ jobs:
       id: import_gpg
       uses: crazy-max/ghaction-import-gpg@v4
       with:
-        gpg_private_key: ${{ secrets.GPG_KEY }}
+        gpg_private_key: ${{ secrets.gpg_private_key }}
 
     - name: Start minikube
       uses: medyagh/setup-minikube@master
