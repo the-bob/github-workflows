@@ -6,6 +6,9 @@ on:
       working_dir: 
         required: true
         type: string
+    secrets:
+      gpg_key:        
+        required: false
 
 jobs:
   terraform-minikube:    
@@ -20,6 +23,13 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+
+    - name: Import GPG key
+      if: secrets.gpg_key != null
+      id: import_gpg
+      uses: crazy-max/ghaction-import-gpg@v4
+      with:
+        gpg_private_key: ${{ secrets.gpg_key }}
 
     - name: Start minikube
       uses: medyagh/setup-minikube@master
