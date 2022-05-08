@@ -25,7 +25,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Import GPG key
-      if: ${{ secrets.gpg_key }} != null
+      if: "${{ secrets.gpg_key }}" != null
       id: import_gpg
       uses: crazy-max/ghaction-import-gpg@v4
       with:
