@@ -80,5 +80,9 @@ jobs:
         while read url; do curl $url; done < url.txt
         echo "Showing Pods"
         kubectl get po --all-namespaces
+        echo ""
         echo "Showing Ingress"
         kubectl get ingress --all-namespaces
+        echo ""
+        echo "Showing Services"
+        kubectl get svc --all-namespaces
