@@ -2,6 +2,9 @@ name: Terraform CI
 
 on:
   workflow_call:
+    inputs:
+      name:
+        required: false 
     secrets:
       github_token:
         required: false
