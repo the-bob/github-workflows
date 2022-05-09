@@ -15,8 +15,8 @@ jobs:
       run:
         shell: bash
 
-   env:
-      GITHUB_TOKEN: ${{ secrets.github_token }}
+    env:
+        GITHUB_TOKEN: ${{ secrets.github_token }}
       
     steps:
     - name: Checkout
