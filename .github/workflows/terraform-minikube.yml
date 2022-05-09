@@ -42,6 +42,7 @@ jobs:
     - name: Try the cluster !
       run: |
         kubectl get pods -A
+        helm plugin install https://github.com/jkroepke/helm-secrets
         minikube update-context
 
     - name: Setup Terraform
