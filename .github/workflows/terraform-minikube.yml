@@ -13,8 +13,6 @@ on:
     secrets:
       gpg_private_key:
         required: false
-      github_token:
-        required: false
 
 jobs:
   terraform-minikube:    
@@ -25,9 +23,6 @@ jobs:
       run:
         shell: bash
         working-directory: ${{ inputs.working_dir }}
-        
-    env:
-      GITHUB_TOKEN: ${{ secrets.github_token }}
 
     steps:
     - name: Checkout

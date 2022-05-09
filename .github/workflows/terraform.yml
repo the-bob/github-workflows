@@ -2,6 +2,9 @@ name: Terraform CI
 
 on:
   workflow_call:
+    secrets:
+      github_token:
+        required: false
 
 jobs:
   terraform:    
@@ -12,6 +15,9 @@ jobs:
       run:
         shell: bash
 
+   env:
+      GITHUB_TOKEN: ${{ secrets.github_token }}
+      
     steps:
     - name: Checkout
       uses: actions/checkout@v3
