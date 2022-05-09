@@ -72,3 +72,9 @@ jobs:
     - name: Terraform Apply
       # if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
       run: terraform apply -auto-approve -input=false
+    
+    - name: Test Application
+      run: |
+        nohup minikube tunnel > /dev/null 2>&1 &
+        minikube service --url ingress-nginx-controller > url.txt
+        while read url; do curl $url; done < url.txt
