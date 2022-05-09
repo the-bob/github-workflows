@@ -39,9 +39,8 @@ jobs:
     - name: Start minikube
       uses: medyagh/setup-minikube@master
 
-    - name: Try the cluster !
+    - name: Install Helm Secrets
       run: |
-        kubectl get pods -A
         helm plugin install https://github.com/jkroepke/helm-secrets
         minikube update-context
 
