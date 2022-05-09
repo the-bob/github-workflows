@@ -78,3 +78,7 @@ jobs:
         nohup minikube tunnel > /dev/null 2>&1 &
         minikube service --url ingress-nginx-controller > url.txt
         while read url; do curl $url; done < url.txt
+        echo "Showing Pods"
+        kubectl get po --all-namespaces
+        echo "Showing Ingress"
+        kubectl get ingress --all-namespaces
