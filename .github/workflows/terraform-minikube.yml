@@ -44,6 +44,7 @@ jobs:
     - name: Install Helm Secrets
       run: |
         helm plugin install https://github.com/jkroepke/helm-secrets
+        sops -d charts/api/secrets.yaml
         helm secrets view charts/api/secrets.yaml
 
     - name: Start minikube
