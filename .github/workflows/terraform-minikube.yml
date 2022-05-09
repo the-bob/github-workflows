@@ -44,12 +44,15 @@ jobs:
     - name: Install Helm Secrets
       run: |
         helm plugin install https://github.com/jkroepke/helm-secrets
-        minikube update-context
         helm secrets view charts/api/secrets.yaml
 
     - name: Start minikube
       uses: medyagh/setup-minikube@master
-      
+
+    - name: Setup minikube
+      run: |
+        minikube update-context
+
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
       with:
