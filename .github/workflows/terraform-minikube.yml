@@ -76,8 +76,9 @@ jobs:
     - name: Test Deployment
       run: |
         nohup minikube tunnel > /dev/null 2>&1 &
-        minikube service --url ingress-nginx-controller > url.txt
-        while read url; do curl $url; done < url.txt
+        echo "Accessing Localhost"
+        curl -H "Host: api.localhost" http://127.0.0.1
+        echo ""
         echo "Showing Pods"
         kubectl get po --all-namespaces
         echo ""
