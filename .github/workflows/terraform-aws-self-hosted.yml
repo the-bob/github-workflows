@@ -1,0 +1,70 @@
+name: Terraform
+
+on:
+  workflow_call:
+    inputs:
+      working_dir: 
+        required: true
+        type: string
+      kubectl:
+        required: false
+        type: boolean
+        default: false
+      terraform_vars:
+        required: false
+        type: string        
+      eks-cluster:
+        required: false
+        type: string
+      eks-region:
+        required: false
+        type: string
+      runner-ip:
+        required: false
+        type: string   
+
+    secrets:
+      access_key_id:
+        required: true
+      secret_access_key:
+        required: true
+
+jobs:
+  terraform:    
+    runs-on: sefl-hosted
+    environment: development
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.access_key_id }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.secret_access_key }}
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.working_dir }}
+        
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.1.8
+        
+    - name: Terraform Init
+      run: terraform init
+
+    - name: Terraform Format
+      run: terraform fmt -check
+    
+    - name: Terraform Validate
+      run: terraform validate
+
+    - name: Terraform Plan
+      if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+      run: terraform plan -input=false ${{ inputs.terraform_vars }} 
+
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+      run: terraform apply -auto-approve -input=false
