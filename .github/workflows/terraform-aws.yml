@@ -50,11 +50,11 @@ jobs:
     steps:
     # https://github.com/actions/setup-node
     - name: Setup Node
-      if: inputs.runner-label != "ubuntu-linux"
+      if: inputs.runner-label != 'ubuntu-linux'
       uses: actions/setup-node@v2
       with:
         node-version: '14'
-        
+
     - name: Checkout
       uses: actions/checkout@v3
 
