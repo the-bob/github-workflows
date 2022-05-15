@@ -6,22 +6,9 @@ on:
       working_dir: 
         required: true
         type: string
-      kubectl:
-        required: false
-        type: boolean
-        default: false
       terraform_vars:
         required: false
-        type: string        
-      eks-cluster:
-        required: false
         type: string
-      eks-region:
-        required: false
-        type: string
-      runner-ip:
-        required: false
-        type: string   
 
     secrets:
       access_key_id:
