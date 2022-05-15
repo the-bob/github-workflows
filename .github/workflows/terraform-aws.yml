@@ -35,7 +35,7 @@ on:
 jobs:
   terraform:    
     runs-on: ${{ inputs.runner-label }}
-    environment: development
+    environment: development-${{ inputs.runner-label }}
 
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.access_key_id }}
