@@ -22,6 +22,10 @@ on:
       runner-ip:
         required: false
         type: string   
+      runner-label:
+        required: false
+        type: string
+        default: ubuntu-latest
     secrets:
       access_key_id:
         required: true
@@ -30,7 +34,7 @@ on:
 
 jobs:
   terraform:    
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner-label }}
     environment: development
 
     env:
