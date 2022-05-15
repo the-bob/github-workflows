@@ -18,7 +18,7 @@ on:
 
 jobs:
   terraform:    
-    runs-on: sefl-hosted
+    runs-on: self-hosted
 
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.access_key_id }}
