@@ -34,7 +34,11 @@ jobs:
         do
           FILE=${dir}README.md
           if test -f "$FILE"; then
-              echo "* [${dir}](${file})"
+              echo "* [${dir}](${FILE})" >> README_MODULES.md
           fi
         done;
-        git commit . -m 'chore: Dependency Update'
+        
+    - name: Commit & Push changes
+      uses: actions-js/push@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
