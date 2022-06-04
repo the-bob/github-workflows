@@ -1,0 +1,35 @@
+name: Terraform
+
+on:
+  workflow_call:
+    inputs:
+      working_dir: 
+        required: true
+        type: string 
+      runner-label:
+        required: false
+        type: string
+        default: ubuntu-latest
+    secrets:
+      access_key_id:
+        required: true
+      secret_access_key:
+        required: true
+
+jobs:
+  terraform:    
+    runs-on: ${{ inputs.runner-label }}
+    environment: development-${{ inputs.runner-label }}
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Terraform Docs
+      uses: terraform-docs/gh-actions@v1.0.0
+      with:
+        find-dir: ./
+        output-file: README.md
+        output-method: inject
+        git-push: "true"
+       
+      
