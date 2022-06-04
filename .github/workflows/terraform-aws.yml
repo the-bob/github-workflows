@@ -46,7 +46,6 @@ jobs:
         shell: bash
         working-directory: ${{ inputs.working_dir }}
 
-
     steps:
     # https://github.com/actions/setup-node
     - name: Setup Node
@@ -71,6 +70,13 @@ jobs:
     
     - name: Terraform Validate
       run: terraform validate
+
+    - name: Render terraform docs inside the README.md and push changes back to PR branch
+      uses: terraform-docs/gh-actions@v1.0.0
+      with:
+        output-file: README.md
+        output-method: inject
+        git-push: "true"
 
     - name: Configure EKS
       timeout-minutes: 10
