@@ -24,5 +24,17 @@ jobs:
         output-file: README.md
         output-method: inject
         git-push: "true"
-       
-      
+    
+    - name: Finalize Docs
+      if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+      run: |
+        echo "# Current Modules" > README_MODULES.md
+        
+        for dir in `ls -d */`; 
+        do
+          FILE=${dir}README.md
+          if test -f "$FILE"; then
+              echo "* [${dir}](${file})"
+          fi
+        done;
+        git commit . -m 'chore: Dependency Update'
