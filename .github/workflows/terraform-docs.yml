@@ -3,9 +3,6 @@ name: Terraform Docs
 on:
   workflow_call:
     inputs:
-      working_dir: 
-        required: true
-        type: string 
       runner-label:
         required: false
         type: string
@@ -22,7 +19,6 @@ jobs:
     - name: Terraform Docs
       uses: terraform-docs/gh-actions@v1.0.0
       with:
-        workking_dir: .
         find-dir: ./
         output-file: README.md
         output-method: inject
