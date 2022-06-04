@@ -10,11 +10,6 @@ on:
         required: false
         type: string
         default: ubuntu-latest
-    secrets:
-      access_key_id:
-        required: true
-      secret_access_key:
-        required: true
 
 jobs:
   terraform-docs:    
