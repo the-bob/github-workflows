@@ -26,7 +26,7 @@ jobs:
         git-push: "true"
     
     - name: Finalize Docs
-      if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+      # if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
       run: |
         echo "# Current Modules" > README_MODULES.md
         
