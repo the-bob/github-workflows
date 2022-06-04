@@ -17,6 +17,7 @@ jobs:
       uses: actions/checkout@v3
     
     - name: Terraform Docs
+      if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
       uses: terraform-docs/gh-actions@v1.0.0
       with:
         find-dir: ./
