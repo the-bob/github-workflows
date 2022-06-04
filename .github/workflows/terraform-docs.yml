@@ -37,8 +37,6 @@ jobs:
               echo "* [${dir}](${FILE})" >> README_MODULES.md
           fi
         done;
-        
+
     - name: Commit & Push changes
-      uses: actions-js/push@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      uses: stefanzweifel/git-auto-commit-action@v4
