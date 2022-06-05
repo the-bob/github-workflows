@@ -26,6 +26,10 @@ on:
         required: false
         type: string
         default: ubuntu-latest
+      environment:
+        required: false
+        type: string
+        default: development
     secrets:
       access_key_id:
         required: true
@@ -35,7 +39,7 @@ on:
 jobs:
   terraform:    
     runs-on: ${{ inputs.runner-label }}
-    environment: development-${{ inputs.runner-label }}
+    environment: ${{ inputs.environment }}-${{ inputs.runner-label }}
 
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.access_key_id }}
